@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+build/
+*.xcresult
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# XcodeGen output — regenerate with `xcodegen generate`
+PulseCoach.xcodeproj/
+PulseCoach/Info.plist
+PulseCoach/PulseCoach.entitlements
+PulseCoachWatch/Info.plist
+PulseCoachWatch/PulseCoachWatch.entitlements
+PulseWidgets/Info.plist
+PulseWidgets/PulseWidgets.entitlements
+
+# Local config and secrets
+*.xcconfig.local
+.env
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,133 @@
+# Generate PulseCoach.xcodeproj with:  xcodegen generate
+name: PulseCoach
+options:
+  bundleIdPrefix: com.pulsecoach
+  deploymentTarget:
+    iOS: "27.0"
+    watchOS: "27.0"
+  createIntermediateGroups: true
+  developmentLanguage: th
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""          # set your Apple Developer Team ID here
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+
+packages:
+  PulseCore:
+    path: PulseCore
+
+targets:
+  PulseCoach:
+    type: application
+    platform: iOS
+    sources: [PulseCoach, Shared]
+    dependencies:
+      - package: PulseCore
+      - target: PulseCoachWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pulsecoach.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""   # no app icon yet; Shared/Exercises.xcassets is images only
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+    info:
+      path: PulseCoach/Info.plist
+      properties:
+        CFBundleDisplayName: PulseCoach
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSHealthShareUsageDescription: PulseCoach อ่านอัตราการเต้นหัวใจ HRV และการนอน เพื่อประเมินความพร้อมและวางแผนออกกำลังกาย
+        NSHealthUpdateUsageDescription: PulseCoach บันทึก workout ที่คุณทำลงแอปสุขภาพ
+    entitlements:
+      path: PulseCoach/PulseCoach.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.background-delivery: true
+        com.apple.developer.healthkit.access: []
+
+  PulseCoachWatch:
+    type: application
+    platform: watchOS
+    sources: [PulseCoachWatch, Shared]
+    dependencies:
+      - package: PulseCore
+      - target: PulseWidgets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pulsecoach.app.watchkitapp
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""   # no app icon yet; Shared/Exercises.xcassets is images only
+        PRODUCT_NAME: PulseCoachWatch
+        GENERATE_INFOPLIST_FILE: YES
+    info:
+      path: PulseCoachWatch/Info.plist
+      properties:
+        CFBundleDisplayName: PulseCoach
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.pulsecoach.app
+        WKBackgroundModes: [workout-processing]
+        NSHealthShareUsageDescription: PulseCoach อ่านอัตราการเต้นหัวใจ HRV และการนอน เพื่อประเมินความพร้อมและวางแผนออกกำลังกาย
+        NSHealthUpdateUsageDescription: PulseCoach บันทึก workout ที่คุณทำลงแอปสุขภาพ
+    entitlements:
+      path: PulseCoachWatch/PulseCoachWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.background-delivery: true
+        com.apple.developer.healthkit.access: []
+        com.apple.security.application-groups: [group.com.pulsecoach.app]
+
+  PulseWidgets:
+    type: app-extension
+    platform: watchOS
+    sources: [PulseWidgets]
+    dependencies:
+      - package: PulseCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pulsecoach.app.watchkitapp.widgets
+        PRODUCT_NAME: PulseWidgets
+        GENERATE_INFOPLIST_FILE: YES
+    info:
+      path: PulseWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: PulseCoach
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: PulseWidgets/PulseWidgets.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.pulsecoach.app]
+
+  PulseCoachUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [PulseCoachUITests]
+    dependencies:
+      - target: PulseCoach
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pulsecoach.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: PulseCoach
+
+schemes:
+  PulseCoach:
+    build:
+      targets:
+        PulseCoach: all
+        PulseCoachWatch: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [PulseCoachUITests]
+  PulseCoachWatch:
+    build:
+      targets:
+        PulseCoachWatch: all
+    run:
+      config: Debug
